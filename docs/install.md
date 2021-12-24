@@ -1,17 +1,16 @@
-# Envorinment
+# Environment
 
 Tested on Ubuntu 16.04 64bit and LLVM 5.0 (with gold plugin)
 
 # Installation Prerequisite
 
-Before using Fuzzification, user should prepare llvm, clang, and proper (i.e., modified version) AFL fuzzer.  
+Fuzzification requires llvm, clang, and a modified version of the AFL fuzzer.
 
-## LLVM (with gold plugin)
+## Install LLVM with Gold Plugin
 
-* User can use llvm and clang with gold plug in. User can install through the below commands. 
+The following bash script installs llvm and clang with the [gold plugin](https://www.llvm.org/docs/GoldPlugin.html).
 
 ```bash
-
 # Install dependencies
 $ sudo apt-get update
 $ sudo apt-get install git python python-pip python-dev cmake libffi-dev
@@ -23,15 +22,10 @@ $ git clone --depth 1 git://sourceware.org/git/binutils-gdb.git binutils
 
 # Extract source
 $ tar xvf llvm-5.0.0.src.tar.xz
-$ tar xvf cfe-5.0.0.src.tar.xz
+# Extract clang src into the llvm tools directory
+$ tar xvf cfe-5.0.0.src.tar.xz --directory llvm-5.0.0.src/tools
 
-# Copy clang src into the llvm tools directory
-$ cd llvm-5.0.0.src
-$ cd tools
-$ mv ../../cfe-5.0.0.src .
-$ cd ..
-
-# compile the llvm with DLLVM_USE_LINKER and DLLVM_BINUTILS_INCDIR
+# Compile the llvm with DLLVM_USE_LINKER and DLLVM_BINUTILS_INCDIR
 # (NOTE: SHOULD specify correct binutils directory
 # , i.e., replace YOUR_BINUTILS with user's path)
 $ mkdir build && cd build
@@ -43,7 +37,7 @@ $ CC=gcc CXX=g++                              \
         -DLLVM_USE_LINKER=gold                \
         -DLLVM_BINUTILS_INCDIR={YOUR_BINUTILS/include} \
         -DLLVM_TARGETS_TO_BUILD="host;AMDGPU" \
-        -Wno-dev ..                          
+        -Wno-dev ..
 $ make -j 4
 $ make install
 ```
@@ -62,9 +56,8 @@ $ cd {repo}/src
 $ ./compile_pass.sh
 ```
 
-## AFL (modified version that we provide)
-
-* Fuzzification uses AFL fuzzer's functionality to measure the number of executed basic blocks so we modified the source code of AFL. The modified fuzzer is under `fuzzer/afl-2.51b-bbcheck`. 
+## Modified AFL Installation
+* Fuzzification uses AFL fuzzer's functionality to measure the number of executed basic blocks so we modified the source code of AFL. The modified fuzzer is under `fuzzer/afl-2.51b-bbcheck`.
 
 * So user SHOULD use the provided fuzzers for generating **fuzzified** binary.
 
