@@ -34,7 +34,7 @@ RUN cd llvm-5.0.0.src/build && make -j4
 RUN cd llvm-5.0.0.src/build && make install
 
 # (2) Compile LLVM-Pass
-RUN git clone --recurse-submodules https://github.com/sslab-gatech/fuzzification.git
+RUN git clone --recurse-submodules https://github.com/j03d03/fuzzification.git
 RUN cd fuzzification/src && ./compile_pass.sh
 
 # (3) Install modified AFL
